@@ -61,33 +61,13 @@ input.addEventListener('change', async function(e) {
     return ('0' + (byte & 0xFF).toString(16)).slice(-2);
   }).join(' ');
   const indivBits = hexString.split(' ');
-  let tmpChunk = [];
-  indivBits.forEach(i => {
-    if  (tmpChunk.length < 8) tmpChunk.push(i);
-    else {
-      let str = '';
-      tmpChunk.forEach(j => str += j);
-      chunks.push(hex_to_ascii_self(str));
-      tmpChunk = [];
-      tmpChunk.push(i);
-    }
-  });
-
-  console.log(chunks);
-  let isIcc = false;
-  for(let i = 0; i<chunks.length; i++) {
-    if (chunks[i].includes('iCC')) {
-      isIcc = true;
-      alert('Image has ICC Profile !');
-      break;
-    }
-    else if (chunks[i].includes('IDAT')) {
-
-      break;
-    }
+  let headers  = parsePNGImage(indivBits);
+  alert('Headers present in the PNG image are '+headers.map(i => i.name));
+  if (headers.map(i => i.name).includes('iCCP')) {
+    document.getElementById('result').innerText = 'iCCP Header present. ICC Profile is Embedded';
   }
-  if (!isIcc) {
-    alert("Image doesn't have ICC Profile");
+  else {
+    document.getElementById('result').innerText = 'iCCP Header absent.';
   }
 });
 
@@ -99,4 +79,41 @@ function hex_to_ascii_self(str1)
     str += String.fromCharCode(parseInt(hex.substr(n, 2), 16));
   }
   return str;
+}
+
+parsePNGImage = (bytes) => {
+  const PNG_HEADER = ['89', '50', '4e', '47', '0d', '0a', '1a', '0a'];
+  const headers = [];
+  let isPng = true;
+  for (let i=0; i<PNG_HEADER.length; i++) {
+    if (PNG_HEADER[i] != bytes[i]) {
+      isPng = false;
+      break;
+    }
+  }
+  if (!isPng) {
+    alert("Image is not valid PNG");
+    return;
+  }
+  let currentPosition = PNG_HEADER.length;
+  while (currentPosition < bytes.length) {
+    let blockLength = 0, typeName = '';
+    let blockLenghtHex = '';
+    for (let i = 0; i< 4; i++) {
+      blockLenghtHex += bytes[currentPosition+i]
+    }
+    currentPosition += 4;
+    blockLength = parseInt(blockLenghtHex, 16);
+    let typeNameHex = '';
+    for (let i = 0; i< 4; i++) {
+      typeNameHex += bytes[currentPosition+i]
+    }
+    currentPosition += 4;
+    typeName = hex_to_ascii_self(typeNameHex);
+    console.log(typeName);
+    headers.push({name: typeName, length: blockLength});
+    currentPosition += blockLength;
+    currentPosition += 4;
+  }
+  return headers;
 }
