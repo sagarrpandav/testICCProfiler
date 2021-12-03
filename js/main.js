@@ -5,6 +5,8 @@ const ctx1 = canvas1.getContext('2d');
 const canvas2 = document.getElementById('canvas2');
 const ctx2 = canvas2.getContext('2d');
 
+const canvas3 = document.getElementById('canvas2');
+const ctx3 = canvas2.getContext('2d');
 
 canvas1.width = 500;
 canvas1.height = 250;
