@@ -62,12 +62,12 @@ input.addEventListener('change', async function(e) {
   }).join(' ');
   const indivBits = hexString.split(' ');
   let headers  = parsePNGImage(indivBits);
-  alert('Headers present in the PNG image are '+headers.map(i => i.name));
+  alert('Chunks present in the PNG image are '+headers.map(i => i.name));
   if (headers.map(i => i.name).includes('iCCP')) {
-    document.getElementById('result').innerText = 'iCCP Header present. ICC Profile is Embedded';
+    document.getElementById('result').innerText = 'iCCP Chunk present. ICC Profile is Embedded';
   }
   else {
-    document.getElementById('result').innerText = 'iCCP Header absent.';
+    document.getElementById('result').innerText = 'iCCP Chunk absent.';
   }
 });
 
