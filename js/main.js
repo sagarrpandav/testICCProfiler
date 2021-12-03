@@ -46,12 +46,12 @@ console.log(document.getElementById('img2'));
 const input = document.querySelector('input');
 input.addEventListener('change', async function(e) {
   const [file] = e.target.files;
-  var img = new Image();
-  img.onload = function(){
-    ctx3.drawImage(img,0,0);
-  }
-  img.src = file;
-  ctx2.drawImage(file, 0,0, 500, 250);
+  //var img = new Image();
+  //img.onload = function(){
+    //ctx3.drawImage(img,0,0);
+  //}
+  //img.src = file;
+  //ctx2.drawImage(file, 0,0, 500, 250);
   const arrayBuffer = await file.arrayBuffer();
   const byteArray = new Uint8Array(arrayBuffer);
   const signature = [137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82];
