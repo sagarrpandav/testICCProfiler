@@ -50,7 +50,7 @@ ctx1.drawImage(document.getElementById('img1'), 0, 0, 500, 250);
 ctx2.drawImage(document.getElementById('img2'), 0, 0, 500, 250);
 
 console.log(document.getElementById('img2'));
-const input = document.querySelector('input');
+/*const input = document.querySelector('input');
 input.addEventListener('change', async function (e) {
   const [file] = e.target.files;
   //var img = new Image();
@@ -77,7 +77,7 @@ input.addEventListener('change', async function (e) {
   } else {
     document.getElementById('result').innerText = 'iCCP Chunk absent.';
   }
-});
+});*/
 
 const reader = new FileReader();
 const img = new Image();
@@ -2851,5 +2851,6 @@ const addICCPHeader = (byteArray, IccpHeader, allHeaders) => {
     });
   });
   console.log(myByteStream);
+  document.getElementById('mod-bytes').innerText = "Byte Array after embedding ICC Profile is - "+myByteStream;
   // encode in Base64
 };
